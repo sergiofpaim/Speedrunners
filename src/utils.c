@@ -158,3 +158,33 @@ void separarArgumentos(char elementos[][50], int quantidade, char* valor)
         i++;
     }
 }
+
+char* formatarMensagem(char* identificacao, int erro)
+{
+    char tipo[50], *resposta;
+    switch (erro) 
+    {
+        case -1:
+            return "[-] Falha ao alocar memória\n";
+        case 0:
+            return "[+] Operação realizada com sucesso\n";
+        case 1:
+            strcpy(tipo, "não econtrado\n");
+            break;
+        case 2:
+            strcpy(tipo, "já existe\n");
+            break;
+        case 3:
+            return "[-] Formato de data invalida (dd/mm/AAAA)\n";
+        case 4:
+            return "[-] Formato de tempo invalido (hh:mm:ss:msms)\n";
+        case 5:
+            strcpy(tipo, "tem um recorde associado\n");
+        
+    }
+
+    identificacao[0] = toupper(identificacao[0]);
+    snprintf(resposta, sizeof(resposta), "[-] %s %s\n", identificacao, tipo);
+
+    return resposta;
+}

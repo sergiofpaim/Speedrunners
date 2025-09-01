@@ -1,0 +1,7 @@
+-1 = Erro ao alocar memoria
+0 = Sucesso
+1 = não econtrado
+2 = ja existe
+3 = data invalida
+4 = tempo invalida
+5 = recorde associado

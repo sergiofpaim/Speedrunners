@@ -14,7 +14,7 @@
    - Funções para gerenciar usuarios, jogos e recordes
    ============================================================ */
 
-int usuarioAdd(char* apelido, char* email, char* nascimento, char* pais)
+char* usuarioAdd(char* apelido, char* email, char* nascimento, char* pais)
 {
     struct Usuario temp;
 
@@ -24,26 +24,26 @@ int usuarioAdd(char* apelido, char* email, char* nascimento, char* pais)
     strncpy(temp.pais, pais, sizeof(temp.pais)-1);
 
     if (usuarioQuery(temp.apelido) >= 0)
-        return 1;
+        return formatarMensagem("usuario", 2);
 
     if (validarData(temp.nascimento) == 0)
-        return 2;
+        return formatarMensagem("usuario", 3);
 
     usuarios.tamanho++;
     usuarios.lista = (struct Usuario *)realloc(usuarios.lista, usuarios.tamanho * sizeof(struct Usuario));
     if (usuarios.lista != NULL)
     {
         usuarios.lista[usuarios.tamanho - 1] = temp;
-        return 0;
+        return formatarMensagem("usuario", 0);
     }
     else
     {
         usuarios.tamanho--;
-        return -1;
+        return formatarMensagem("usuario", -1);
     }
 }
 
-int jogoAdd(char* nome, char* desenvolvedora, char* data_lancamento, char* genero)
+char* jogoAdd(char* nome, char* desenvolvedora, char* data_lancamento, char* genero)
 {
     struct Jogo temp;
 
@@ -53,43 +53,43 @@ int jogoAdd(char* nome, char* desenvolvedora, char* data_lancamento, char* gener
     strncpy(temp.genero, genero, sizeof(temp.genero)-1);
 
     if (jogoQuery(temp.nome) >= 0)
-        return 1;
+        return formatarMensagem("jogo", 2);
 
     if (validarData(temp.data_lancamento) != 1)
-        return 2;
+        return formatarMensagem("jogo", 3);
 
     jogos.lista = (struct Jogo *)realloc(jogos.lista, ++jogos.tamanho * sizeof(struct Jogo));
 
     if (jogos.lista != NULL)
     {
         jogos.lista[jogos.tamanho - 1] = temp;
-        return 0;
+        return formatarMensagem("jogo", 0);
     }
     else
     {
         jogos.tamanho--;
-        return -1;
+        return formatarMensagem("jogo", -1);
     }
 }
 
-int recordeAdd(char* usuario, char* jogo, char* plataforma, char* tempo)
+char* recordeAdd(char* usuario, char* jogo, char* plataforma, char* tempo)
 {
     struct Recorde temp;
 
     if (usuarioQuery(usuario) >= 0)
         strcpy(temp.usuario, usuario);
     else
-        return 1;
+        return formatarMensagem("usuario", 1);
 
     if (jogoQuery(jogo) >= 0)
         strcpy(temp.jogo, jogo);
     else
-        return 2;
+        return formatarMensagem("jogo", 1);
 
     if (validarRecordeTempo(tempo) == 1)
         temp.tempo = converterTempo(tempo);
     else 
-        return 3;
+        return formatarMensagem("recorde", 3);
 
     strncpy(temp.plataforma, plataforma, sizeof(temp.plataforma)-1);
 
@@ -101,16 +101,16 @@ int recordeAdd(char* usuario, char* jogo, char* plataforma, char* tempo)
     if (recordes.lista != NULL)
     {
         recordes.lista[recordes.tamanho - 1] = temp;
-        return 0;
+        return formatarMensagem("recorde", 0);
     }
     else
     {
         recordes.tamanho--;
-        return -1;
+        return formatarMensagem("recorde", -1);
     }
 }
 
-int usuarioEdit(char* identificacao, int campo, char* valor)
+char* usuarioEdit(char* identificacao, int campo, char* valor)
 {
     int posicao;
 
@@ -120,37 +120,37 @@ int usuarioEdit(char* identificacao, int campo, char* valor)
         {
             case 1:
                 if (usuarioQuery(valor) >= 0)
-                    return 2;
+                    return formatarMensagem("usuario", 2);
                 else
                 {
                     strcpy(usuarios.lista[posicao].apelido, valor);
-                    return 0;
+                    return formatarMensagem("usuario", 0);
                 }
                 break;
             case 2:
                 strcpy(usuarios.lista[posicao].email, valor);
-                return 0;
+                return formatarMensagem("usuario", 0);
                 break;
             case 3:
                 if (validarData(valor) != 1)
-                    return 3;
+                    return formatarMensagem("usuario", 3);
                 else
                 {
                     strcpy(usuarios.lista[posicao].nascimento, valor);
-                    return 0;
+                    return formatarMensagem("usuario", 0);
                     break;
                 }
                 break;
             case 4:
                 strcpy(usuarios.lista[posicao].pais, valor);
-                return 0;
+                return formatarMensagem("usuario", 0);
                 break;
         }
     }
-    else return 1;
+    else return formatarMensagem("usuario", 1);
 }
 
-int jogoEdit(char* identificacao, int campo, char* valor)
+char* jogoEdit(char* identificacao, int campo, char* valor)
 {
     int posicao;
     if ((posicao = jogoQuery(identificacao)) >= 0)
@@ -159,39 +159,39 @@ int jogoEdit(char* identificacao, int campo, char* valor)
             {
             case 1:
                 if (jogoQuery(valor) >= 0)
-                    return 2;
+                    return formatarMensagem("jogo", 2);
                 else
                 {
                     strcpy(jogos.lista[posicao].nome, valor);
-                    return 0;
+                    return formatarMensagem("jogo", 0);
                 }
             
                 break;
             case 2:
                 strcpy(jogos.lista[posicao].desenvolvedora, valor);
-                return 0;
+                return formatarMensagem("jogo", 0);
                 break;
             case 3:
                 if (validarData(valor) != 1)
-                    return 3;
+                    return formatarMensagem("jogo", 3);
                 else
                 {
                     strcpy(jogos.lista[posicao].data_lancamento, valor);
-                    return 0;
+                    return formatarMensagem("jogo", 0);
                     break;
                 }
                 break;
             case 4:
                 strcpy(jogos.lista[posicao].genero, valor);
-                return 0;
+                return formatarMensagem("jogo", 0);
                 break;
         }
     }
     else
-        return 1;
+        return formatarMensagem("jogo", 1);
 }
 
-int recordeEdit(char* identificacao, int campo, char* valor)
+char* recordeEdit(char* identificacao, int campo, char* valor)
 {
     struct Resultados resultado = recordeQuery("*", "*", identificacao);
 
@@ -202,20 +202,20 @@ int recordeEdit(char* identificacao, int campo, char* valor)
         {
             case 1:
                 if (usuarioQuery(valor) < 0)
-                        return 2;
+                        return formatarMensagem("usuario", 2);
                 else
                 {
                     strcpy(recordes.lista[posicao].usuario, usuarios.lista[usuarioQuery(valor)].apelido);
-                    return 0;
+                    return formatarMensagem("jogo", 0);
                 }
                 break;
             case 2:
                 if (jogoQuery(valor) < 0)
-                    return 3;
+                    return formatarMensagem("recorde", 3);
                 else
                 {
                     strcpy(recordes.lista[posicao].jogo, jogos.lista[jogoQuery(valor)].nome);
-                    return 0;
+                    return formatarMensagem("recorde", 0);
                 }
                 break;
             case 3:
@@ -223,21 +223,21 @@ int recordeEdit(char* identificacao, int campo, char* valor)
                 break;
             case 4:
                     if (validarRecordeTempo(valor) != 1)
-                        return 4;
+                        return formatarMensagem("recorde", 4);
                     else
                     {
                         recordes.lista[posicao].tempo = converterTempo(valor);
-                        return 0;
+                        return formatarMensagem("recorde", 0);
                         break;
                     }
                 break;
         }
     }
     else
-        return 1;
+        return formatarMensagem("rescorde", 1);
 }
 
-int usuarioDelete(char* identificacao)
+char* usuarioDelete(char* identificacao)
 {
     int posicao;
 
@@ -248,16 +248,16 @@ int usuarioDelete(char* identificacao)
         {
             usuarios.lista[posicao] = usuarios.lista[usuarios.tamanho - 1];
             usuarios.lista = (struct Usuario *)realloc(usuarios.lista, --usuarios.tamanho * sizeof(struct Usuario));
-            return 0;
+            return formatarMensagem("usuario", 0);
         }
         else
-            return 2;
+            return formatarMensagem("usuario", 5);
     }
     else
-        return 1;
+        return formatarMensagem("usuario", 1);
 }
 
-int jogoDelete(char* identificacao)
+char* jogoDelete(char* identificacao)
 {
     int posicao;
     if ((posicao = jogoQuery(identificacao)) >= 0)
@@ -267,16 +267,16 @@ int jogoDelete(char* identificacao)
         {
             jogos.lista[posicao] = jogos.lista[jogos.tamanho - 1];
             jogos.lista = (struct Jogo *)realloc(jogos.lista, --jogos.tamanho * sizeof(struct Jogo));
-            return 0;
+            return formatarMensagem("jogo", 0);
         }
         else
-            return 2;
+            return formatarMensagem("jogo", 5);
     }
     else
-        return 1;
+        return formatarMensagem("jogo", 1);
 }
 
-int recordeDelete(char* identificacao)
+char* recordeDelete(char* identificacao)
 {
     struct Resultados resultado = recordeQuery("*", "*", identificacao);
 
@@ -284,10 +284,10 @@ int recordeDelete(char* identificacao)
     {
         recordes.lista[resultado.lista[0]] = recordes.lista[recordes.tamanho - 1];
         recordes.lista = (struct Recorde *)realloc(recordes.lista, --recordes.tamanho * sizeof(struct Recorde));
-        return 0;
+        return formatarMensagem("recorde", 0);
     }
     else
-        return 1;
+        return formatarMensagem("recorde", 1);
 }
 
 void mostrarUsuarios()
