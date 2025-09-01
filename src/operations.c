@@ -2,7 +2,7 @@
 #include "../include/utils.h"
 #include "../include/queries.h"
 #include "../include/storage.h"
-#include "../include/menus.h"
+#include "../include/interface.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -110,344 +110,184 @@ int recordeAdd(char* usuario, char* jogo, char* plataforma, char* tempo)
     }
 }
 
-void usuarioEdit()
+int usuarioEdit(char* identificacao, int campo, char* valor)
 {
     int posicao;
 
-    printf("\nDigite o apelido do usuario:\n");
-    char temp[24];
-    printf("\n> ");
-    fgets(temp, sizeof(temp), stdin);
-    temp[strcspn(temp, "\n")] = '\0';
-
-    if ((posicao = usuarioQuery(temp)) >= 0)
+    if ((posicao = usuarioQuery(identificacao)) >= 0)
     {
-        int escolha = 0;
-        while (escolha != 999)
+        switch (campo)
         {
-            printf("\nVocê está no modo edição\n");
-            printf("\nDigite o campo que gostaria de editar (1. Apelido, 2. Email, 3. Data de Nascimento, 4. País, 999. Sair da edição)\n");
-            printf("\n> ");
-            scanf("%d", &escolha);
-            while (getchar() != '\n')
-                ;
-            switch (escolha)
-            {
             case 1:
-                printf("\nDigite o nome:\n");
-                printf("\n> ");
+                if (usuarioQuery(valor) >= 0)
+                    return 2;
+                else
                 {
-                    char tempNome[24];
-                    fgets(tempNome, sizeof(tempNome), stdin);
-                    tempNome[strcspn(tempNome, "\n")] = '\0';
-
-                    if (usuarioQuery(tempNome) >= 0)
-                        printf("\nNome já existe\n");
-                    else
-                    {
-                        strcpy(usuarios.lista[posicao].apelido, tempNome);
-                        printf("\nNome editado com sucesso\n");
-                    }
+                    strcpy(usuarios.lista[posicao].apelido, valor);
+                    return 0;
                 }
                 break;
             case 2:
-                printf("\nDigite o email:\n");
-                printf("\n> ");
-                fgets(usuarios.lista[posicao].email, sizeof(usuarios.lista[posicao].email), stdin);
-                usuarios.lista[posicao].email[strcspn(usuarios.lista[posicao].email, "\n")] = '\0';
-                printf("\nEmail editado com sucesso\n");
+                strcpy(usuarios.lista[posicao].email, valor);
+                return 0;
                 break;
             case 3:
-                do
+                if (validarData(valor) != 1)
+                    return 3;
+                else
                 {
-                    struct Usuario temp;
-
-                    printf("\nNascimento (dd-mm-aaaa)\n");
-                    printf("\n> ");
-                    fgets(temp.nascimento, sizeof(temp.nascimento), stdin);
-                    temp.nascimento[strcspn(temp.nascimento, "\n")] = '\0';
-
-                    if (validarData(temp.nascimento) != 1)
-                        printf("\nData em formato inválido, digite no formato (dd-mm-aaaa)\n");
-
-                    else
-                    {
-                        strcpy(usuarios.lista[posicao].nascimento, temp.nascimento);
-                        break;
-                    }
-                } while (1);
+                    strcpy(usuarios.lista[posicao].nascimento, valor);
+                    return 0;
+                    break;
+                }
                 break;
             case 4:
-                printf("\nDigite o país:\n");
-                printf("\n> ");
-                fgets(usuarios.lista[posicao].pais, sizeof(usuarios.lista[posicao].pais), stdin);
-                usuarios.lista[posicao].pais[strcspn(usuarios.lista[posicao].pais, "\n")] = '\0';
-                printf("\nPaís editado com sucesso\n");
+                strcpy(usuarios.lista[posicao].pais, valor);
+                return 0;
                 break;
-            case 999:
-                break;
-            default:
-                printf("\nComando não encontrado\n");
-                break;
-            }
         }
     }
-    else
-        printf("\nNome não encontrado\n");
+    else return 1;
 }
 
-void jogoEdit()
+int jogoEdit(char* identificacao, int campo, char* valor)
 {
     int posicao;
-    char temp[23];
-
-    printf("\nDigite o nome do jogo:\n");
-    printf("\n> ");
-
-    fgets(temp, sizeof(temp), stdin);
-    temp[strcspn(temp, "\n")] = '\0';
-
-    if ((posicao = jogoQuery(temp)) >= 0)
+    if ((posicao = jogoQuery(identificacao)) >= 0)
     {
-        int escolha = 0;
-        while (escolha != 999)
-        {
-            printf("\nVocê está no modo edição!\n");
-            printf("\nDigite o campo que gostaria de editar: (1. Nome, 2. Desenvolvedora, 3. Data de Lançamento, 4. Genero, 999. Sair do modo edição)\n");
-            printf("\n> ");
-            scanf("%d", &escolha);
-            while (getchar() != '\n')
-                ;
-            switch (escolha)
+        switch (campo)
             {
             case 1:
-                printf("\nDigite o do jogo: \n");
-                printf("\n> ");
+                if (jogoQuery(valor) >= 0)
+                    return 2;
+                else
                 {
-                    char tempNome[24];
-                    fgets(tempNome, sizeof(tempNome), stdin);
-                    tempNome[strcspn(tempNome, "\n")] = '\0';
-                    if (jogoQuery(tempNome) >= 0)
-                        printf("\nJogo com nome já registrado!\n");
-                    else
-                    {
-                        strcpy(jogos.lista[posicao].nome, tempNome);
-                        printf("\nNome registrado com sucesso!\n");
-                    }
+                    strcpy(jogos.lista[posicao].nome, valor);
+                    return 0;
                 }
+            
                 break;
             case 2:
-                printf("\nDigite o nome da desenvolvedora: \n");
-                printf("\n> ");
-                fgets(jogos.lista[posicao].desenvolvedora, sizeof(jogos.lista[posicao].desenvolvedora), stdin);
-                jogos.lista[posicao].desenvolvedora[strcspn(jogos.lista[posicao].desenvolvedora, "\n")] = '\0';
-                printf("\nDesenvolvedora editada com sucesso\n");
+                strcpy(jogos.lista[posicao].desenvolvedora, valor);
+                return 0;
                 break;
             case 3:
-                do
+                if (validarData(valor) != 1)
+                    return 3;
+                else
                 {
-                    struct Jogo temp;
-                    printf("\nLançamento (dd-mm-aaaa)\n");
-                    printf("\n> ");
-                    fgets(temp.data_lancamento, sizeof(temp.data_lancamento), stdin);
-                    temp.data_lancamento[strcspn(temp.data_lancamento, "\n")] = '\0';
-
-                    if (validarData(temp.data_lancamento) != 1)
-                        printf("\nData em formato inválido, digite no formato (dd-mm-aaaa)\n");
-                    else
-                    {
-                        strcpy(jogos.lista[posicao].data_lancamento, temp.data_lancamento);
-                        printf("\nLançamento editado com sucesso\n");
-                        break;
-                    }
-                } while (1);
+                    strcpy(jogos.lista[posicao].data_lancamento, valor);
+                    return 0;
+                    break;
+                }
                 break;
             case 4:
-                printf("\nDigite o genero do jogo: \n");
-                printf("\n> ");
-                fgets(jogos.lista[posicao].genero, sizeof(jogos.lista[posicao].genero), stdin);
-                jogos.lista[posicao].genero[strcspn(jogos.lista[posicao].genero, "\n")] = '\0';
-                printf("\nGenero editado com sucesso\n");
+                strcpy(jogos.lista[posicao].genero, valor);
+                return 0;
                 break;
-            case 999:
-                break;
-            default:
-                printf("\nComando não encontrado\n");
-                break;
-            }
         }
     }
     else
-        printf("\nJogo não encontrado!\n");
+        return 1;
 }
 
-void recordeEdit()
+int recordeEdit(char* identificacao, int campo, char* valor)
 {
-    char id[24];
-
-    printf("\nDigite o id do recorde:\n");
-    printf("\n> ");
-
-    fgets(id, sizeof(id), stdin);
-    id[strcspn(id, "\n")] = '\0';
-
-    struct Resultados resultado = recordeQuery("*", "*", id);
+    struct Resultados resultado = recordeQuery("*", "*", identificacao);
 
     if (resultado.tamanho > 0)
     {
-        int escolha = 0;
         int posicao = resultado.lista[0];
-        while (escolha != 999)
+        switch (campo)
         {
-            printf("\nVocê está no modo edição!\n");
-            printf("\nDigite o campo que gostaria de editar: (1. Usuário, 2. Jogo, 3. Plataforma, 4. Tempo, 999. Sair do modo edição)\n");
-            printf("\n> ");
-            scanf("%d", &escolha);
-            while (getchar() != '\n')
-                ;
-            char temp[32];
-
-            switch (escolha)
-            {
             case 1:
-                printf("\nDigite o usuario desejado: \n");
-                printf("\n> ");
-                fgets(temp, sizeof(temp), stdin);
-                temp[strcspn(temp, "\n")] = '\0';
-                if (usuarioQuery(temp) < 0)
-                    printf("\nUsuário não encontrado\n");
+                if (usuarioQuery(valor) < 0)
+                        return 2;
                 else
                 {
-                    strcpy(recordes.lista[posicao].usuario, usuarios.lista[usuarioQuery(temp)].apelido);
-                    printf("\nUsuario editado com sucesso!\n");
+                    strcpy(recordes.lista[posicao].usuario, usuarios.lista[usuarioQuery(valor)].apelido);
+                    return 0;
                 }
                 break;
             case 2:
-                printf("\nDigite o nome do jogo: \n");
-                printf("\n> ");
-                fgets(temp, sizeof(temp), stdin);
-                temp[strcspn(temp, "\n")] = '\0';
-                if (jogoQuery(temp) < 0)
-                    printf("\nJogo não encontrado!\n");
+                if (jogoQuery(valor) < 0)
+                    return 3;
                 else
                 {
-                    strcpy(recordes.lista[posicao].jogo, jogos.lista[jogoQuery(temp)].nome);
-                    printf("\nNome editado com sucesso!\n");
+                    strcpy(recordes.lista[posicao].jogo, jogos.lista[jogoQuery(valor)].nome);
+                    return 0;
                 }
                 break;
             case 3:
-                printf("\nDigite a plataforma: \n");
-                printf("\n> ");
-                fgets(recordes.lista[posicao].plataforma, sizeof(recordes.lista[posicao].plataforma), stdin);
-                recordes.lista[posicao].plataforma[strcspn(recordes.lista[posicao].plataforma, "\n")] = '\0';
+                strcpy(recordes.lista[posicao].plataforma, valor);
                 break;
             case 4:
-                do
-                {
-                    int horas, minutos, segundos, milisecundos;
-                    printf("\nTempo da Run (formato hh:mm:ss:msms):\n");
-                    printf("\n> ");
-                    scanf("%d:%d:%d:%d", &horas, &minutos, &segundos, &milisecundos);
-                    while (getchar() != '\n')
-                        ;
-
-                    if (validarTempo(horas, minutos, segundos, milisecundos) != 1)
-                        printf("\nTempo em formato inválido, digite no formato (hh:mm:ss:msms)\n");
+                    if (validarRecordeTempo(valor) != 1)
+                        return 4;
                     else
                     {
-                        recordes.lista[posicao].tempo = horas * 3600000ULL + minutos * 60000ULL + segundos * 1000ULL + milisecundos;
-                        printf("\nTempo editado com sucesso!\n");
+                        recordes.lista[posicao].tempo = converterTempo(valor);
+                        return 0;
                         break;
                     }
-                } while (1);
                 break;
-            case 999:
-                break;
-            default:
-                printf("\nComando não encontrado\n");
-                break;
-            }
         }
     }
     else
-        printf("\nRecorde não encontrado!\n");
+        return 1;
 }
 
-void usuarioDelete()
+int usuarioDelete(char* identificacao)
 {
     int posicao;
-    char apelido[24];
 
-    printf("\nDigite o apelido do usuario:\n");
-    printf("\n> ");
-
-    fgets(apelido, sizeof(apelido), stdin);
-    apelido[strcspn(apelido, "\n")] = '\0';
-
-    if ((posicao = usuarioQuery(apelido)) >= 0)
+    if ((posicao = usuarioQuery(identificacao)) >= 0)
     {
-        struct Resultados resultados = recordeQuery(apelido, "*", "*");
+        struct Resultados resultados = recordeQuery(usuarios.lista[posicao].apelido, "*", "*");
         if (resultados.tamanho == 0)
         {
             usuarios.lista[posicao] = usuarios.lista[usuarios.tamanho - 1];
             usuarios.lista = (struct Usuario *)realloc(usuarios.lista, --usuarios.tamanho * sizeof(struct Usuario));
-            printf("\nUsuário deletado com sucesso!\n");
+            return 0;
         }
         else
-            printf("\nNão foi possível deletar este usuário, pois há recordes registrados com ele no banco de dados, delete-os primeiro");
+            return 2;
     }
     else
-        printf("\nApelido não encontrado\n");
+        return 1;
 }
 
-void jogoDelete()
+int jogoDelete(char* identificacao)
 {
     int posicao;
-    char nome[24];
-
-    printf("\nDigite o nome do jogo: \n");
-    printf("\n> ");
-
-    fgets(nome, sizeof(nome), stdin);
-    nome[strcspn(nome, "\n")] = '\0';
-
-    if ((posicao = jogoQuery(nome)) >= 0)
+    if ((posicao = jogoQuery(identificacao)) >= 0)
     {
-        struct Resultados resultados = recordeQuery("*", nome, "*");
+        struct Resultados resultados = recordeQuery("*", jogos.lista[posicao].nome, "*");
         if (resultados.tamanho == 0)
         {
             jogos.lista[posicao] = jogos.lista[jogos.tamanho - 1];
             jogos.lista = (struct Jogo *)realloc(jogos.lista, --jogos.tamanho * sizeof(struct Jogo));
-            resultados = recordeQuery("*", jogos.lista[posicao].nome, "*");
-            printf("\nJogo deletado com sucesso!\n");
+            return 0;
         }
         else
-            printf("\nNão foi possível deletar este jogo, pois há recordes registrados com ele no banco de dados, delete-os primeiro");
+            return 2;
     }
     else
-        printf("\nJogo nao encontrado!\n");
+        return 1;
 }
 
-void recordeDelete()
+int recordeDelete(char* identificacao)
 {
-    char id[24];
-
-    printf("\nDigite identificador do recorde: \n");
-    printf("\n> ");
-
-    fgets(id, sizeof(id), stdin);
-    id[strcspn(id, "\n")] = '\0';
-
-    struct Resultados resultado = recordeQuery("*", "*", id);
+    struct Resultados resultado = recordeQuery("*", "*", identificacao);
 
     if (resultado.tamanho > 0)
     {
         recordes.lista[resultado.lista[0]] = recordes.lista[recordes.tamanho - 1];
         recordes.lista = (struct Recorde *)realloc(recordes.lista, --recordes.tamanho * sizeof(struct Recorde));
-        printf("\nRecorde deletado com sucesso!\n");
+        return 0;
     }
     else
-        printf("\nRecorde não encontrado!\n");
+        return 1;
 }
 
 void mostrarUsuarios()

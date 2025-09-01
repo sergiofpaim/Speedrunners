@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "../include/menus.h"
+#include "../include/interface.h"
 #include "../include/operations.h"
 #include "../include/storage.h"
 #include "../include/utils.h"
@@ -34,7 +34,7 @@ void adicionar()
         separarArgumentos(campos, 4, linha);
 
         for (int i = 0; i < 4; i++)
-            printf("%s\n", campos[i]);
+            printf("%s\n\n", campos[i]);
 
         switch(controle)
         {
@@ -75,45 +75,68 @@ void editar()
     printf("Modo de Edição\n");
     while (1)
     {
-        int controle;
-        char campo[30], valor[100], id[50];
+        int controle, resp;
+        char linha[200], campos[3][50];
         printf("\nModo de uso: <numero> <identificador> <campo> <valor> / 999 para voltar\n");
         printf("1. Usuario: *Apelido, Email, Nascimento, Pais\n");
         printf("2. Jogos: *Nome, Desenvolvedora, Data_Lancamento, genero\n");
         printf("3. Recordes: *identificação Usuario, Jogo, Plataforma, Tempo\n");
-
+        printf("Obs: Coloque os valores entre aspas duplas\n");
         printf("\n> ");
         scanf("%d", &controle);
         getchar();
-        if (controle == 999) break;
-        fgets(id, sizeof id, stdin);
-        scanf("%s", campo);
-        getchar();
-        fgets(valor, sizeof(valor), stdin);
 
-        for (int i = 0; campo[i] != '\0'; i++)
-            campo[i] = tolower(campo[i]);
+        if (controle == 999) break;
+        fgets(linha, sizeof(linha), stdin);
+        linha[strcspn(linha, "\n")] = '\0';
+        separarArgumentos(campos, 3, linha);
+
+        for (int i = 0; campos[1][i] != '\0'; i++)
+            campos[1][i] = tolower(campos[1][i]);
+
+        for (int i = 0; i < 3; i++)
+            printf("%s\n", campos[i]);
 
         switch (controle) {
             case 1:
-                if (strcmp(campo, "apelido") == 0)
+                if (strcmp(campos[1], "apelido") == 0)
                 {
-                    printf("apelido\n");
+                    resp = usuarioEdit(campos[0], 1, campos[2]);
+
+                    if (resp == 0) printf("[+] Usuário alterado com sucesso\n");
+                    if (resp == 1) printf("[-] Usuário não encontrado\n");
+                    if (resp == 2) printf("[-] Nome de Usuário ja existe\n");
+                    if (resp == 3) printf("[-] Formato de data Invalido\n");
                     break;
                 }
-                if (strcmp(campo, "email") == 0)
+                if (strcmp(campos[1], "email") == 0)
                 {
-                    printf("email\n");
+                    resp = usuarioEdit(campos[0], 2, campos[2]);
+
+                    if (resp == 0) printf("[+] Usuário alterado com sucesso\n");
+                    if (resp == 1) printf("[-] Usuário não encontrado\n");
+                    if (resp == 2) printf("[-] Nome de Usuário ja existe\n");
+                    if (resp == 3) printf("[-] Formato de data Invalido\n");
                     break;
                 }
-                if (strcmp(campo, "nascimento") == 0)
+                if (strcmp(campos[1], "nascimento") == 0)
                 {
-                    printf("nascimento\n");
+                    resp = usuarioEdit(campos[0], 3, campos[2]);
+
+                    if (resp == 0) printf("[+] Usuário alterado com sucesso\n");
+                    if (resp == 1) printf("[-] Usuário não encontrado\n");
+                    if (resp == 2) printf("[-] Nome de Usuário ja existe\n");
+                    if (resp == 3) printf("[-] Formato de data Invalido\n");
                     break;
                 }
-                if (strcmp(campo, "pais") == 0)
+                if (strcmp(campos[1], "pais") == 0)
                 {
-                    printf("pais\n");
+                    resp = usuarioEdit(campos[0], 4, campos[2]);
+
+                    if (resp == 0) printf("[+] Usuário alterado com sucesso\n");
+                    if (resp == 1) printf("[-] Usuário não encontrado\n");
+                    if (resp == 2) printf("[-] Nome de Usuário ja existe\n");
+                    if (resp == 3) printf("[-] Formato de data Invalido\n");
                     break;
                 }
                 else 
@@ -122,24 +145,44 @@ void editar()
                     break;
                 }
             case 2:
-                if (strcmp(campo, "nome") == 0)
+                if (strcmp(campos[1], "nome") == 0)
                 { 
-                    printf("nome\n");
+                    resp = jogoEdit(campos[0], 1, campos[2]);
+
+                    if (resp == 0) printf("[+] Jogo alterado com sucesso\n");
+                    if (resp == 1) printf("[-] Jogo não encontrado\n");
+                    if (resp == 2) printf("[-] Nome de jogo ja existe\n");
+                    if (resp == 3) printf("[-] Formato de data Invalido\n");
                     break;
                 }
-                if (strcmp(campo, "desenvolvedora") == 0)
+                if (strcmp(campos[1], "desenvolvedora") == 0)
                 {
-                    printf("desenvolvedora\n");
+                    resp = jogoEdit(campos[0], 2, campos[2]);
+
+                    if (resp == 0) printf("[+] Jogo alterado com sucesso\n");
+                    if (resp == 1) printf("[-] Jogo não encontrado\n");
+                    if (resp == 2) printf("[-] Nome de jogo ja existe\n");
+                    if (resp == 3) printf("[-] Formato de data Invalido\n");
                     break;
                 }
-                if (strcmp(campo, "data_lancamento") == 0)
+                if (strcmp(campos[1], "data_lancamento") == 0)
                 {
-                    printf("data_lancamento\n");
+                    resp = jogoEdit(campos[0], 3, campos[2]);
+
+                    if (resp == 0) printf("[+] Jogo alterado com sucesso\n");
+                    if (resp == 1) printf("[-] Jogo não encontrado\n");
+                    if (resp == 2) printf("[-] Nome de jogo ja existe\n");
+                    if (resp == 3) printf("[-] Formato de data Invalido\n");
                     break;
                 }
-                if (strcmp(campo, "genero") == 0)
+                if (strcmp(campos[1], "genero") == 0)
                 {
-                    printf("genero\n");
+                    resp = jogoEdit(campos[0], 4, campos[2]);
+
+                    if (resp == 0) printf("[+] Jogo alterado com sucesso\n");
+                    if (resp == 1) printf("[-] Jogo não encontrado\n");
+                    if (resp == 2) printf("[-] Nome de jogo ja existe\n");
+                    if (resp == 3) printf("[-] Formato de data Invalido\n");
                     break;
                 }
                 else 
@@ -148,24 +191,48 @@ void editar()
                     break;
                 }
             case 3:
-                if (strcmp(campo, "usuario") == 0)
+                if (strcmp(campos[1], "usuario") == 0)
                 { 
-                    printf("usuario\n");
+                    resp = recordeEdit(campos[0], 1, campos[2]);
+
+                    if (resp == 0) printf("[+] Recorde alterado com sucesso\n");
+                    if (resp == 1) printf("[-] Recorde não econtrado\n");
+                    if (resp == 2) printf("[-] Usuário não encontrado\n");
+                    if (resp == 3) printf("[-] Jogo não encontrado\n");
+                    if (resp == 4) printf("[-] Formato de tempo invalido (hh:mm:ss:msms)\n");
                     break;
                 }
-                if (strcmp(campo, "jogo") == 0)
+                if (strcmp(campos[1], "jogo") == 0)
                 {
-                    printf("jogo\n");
+                    resp = recordeEdit(campos[0], 2, campos[2]);
+
+                    if (resp == 0) printf("[+] Recorde alterado com sucesso\n");
+                    if (resp == 1) printf("[-] Recorde não econtrado\n");
+                    if (resp == 2) printf("[-] Usuário não encontrado\n");
+                    if (resp == 3) printf("[-] Jogo não encontrado\n");
+                    if (resp == 4) printf("[-] Formato de tempo invalido (hh:mm:ss:msms)\n");
                     break;
                 }
-                if (strcmp(campo, "plataforma") == 0)
+                if (strcmp(campos[1], "plataforma") == 0)
                 {
-                    printf("plataforma\n");
+                    resp = recordeEdit(campos[0], 3, campos[2]);
+
+                    if (resp == 0) printf("[+] Recorde alterado com sucesso\n");
+                    if (resp == 1) printf("[-] Recorde não econtrado\n");
+                    if (resp == 2) printf("[-] Usuário não encontrado\n");
+                    if (resp == 3) printf("[-] Jogo não encontrado\n");
+                    if (resp == 4) printf("[-] Formato de tempo invalido (hh:mm:ss:msms)\n");
                     break;
                 }
-                if (strcmp(campo, "tempo") == 0)
+                if (strcmp(campos[1], "tempo") == 0)
                 {
-                    printf("tempo\n");
+                    resp = recordeEdit(campos[0], 4, campos[2]);
+
+                    if (resp == 0) printf("[+] Recorde alterado com sucesso\n");
+                    if (resp == 1) printf("[-] Recorde não econtrado\n");
+                    if (resp == 2) printf("[-] Usuário não encontrado\n");
+                    if (resp == 3) printf("[-] Jogo não encontrado\n");
+                    if (resp == 4) printf("[-] Formato de tempo invalido (hh:mm:ss:msms)\n");
                     break;
                 }
                 else 
@@ -185,7 +252,8 @@ void deletar()
     printf("Modo de Deleção\n");
     while (1)
     {
-        int controle;
+        int controle, resp;
+        char valor[30];
 
         printf("Modo de uso: <numero> <identificador>\n");
         printf("1. Usuario: Apelido\n");
@@ -194,13 +262,27 @@ void deletar()
 
         scanf("%d", &controle);
         if (controle == 999) break;
+        fgets(valor, sizeof(valor), stdin);
+        valor[strcspn(valor, "\n")] = '\0';
 
         switch (controle) {
             case 1:
+                resp = usuarioDelete(valor);
+
+                if (resp == 0) printf("[+] Usuario deletado com sucesso\n");
+                if (resp == 1) printf("[-] Usuario não econtrado\n");
+                if (resp == 2) printf("[-] Usuario possui um recorde associado\n");
                 break;
             case 2:
+                resp = jogoDelete(valor);
+                if (resp == 0) printf("[+] Usuario deletado com sucesso\n");
+                if (resp == 1) printf("[-] Recorde não econtrado\n");
+                if (resp == 2) printf("[-] Jogo possui um recorde associado\n");
                 break;
             case 3:
+                resp = recordeDelete(valor);
+                if (resp == 0) printf("[+] Recorde deletado com sucesso\n");
+                if (resp == 1) printf("[-] Recorde não econtrado\n");
                 break;
             default:
                 printf("Numero invalido\n");

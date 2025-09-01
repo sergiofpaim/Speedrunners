@@ -1,5 +1,5 @@
-#ifndef MENUS_H
-#define MENUS_H
+#ifndef INTERFACE_H
+#define INTERFACE_H
 
 void adicionar();
 void editar();

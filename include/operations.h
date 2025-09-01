@@ -4,12 +4,12 @@
 int usuarioAdd(char* apelido, char* email, char* nascimento, char* pais);
 int jogoAdd(char* nome, char* desenvolvedora, char* data_lancamento, char* genero);
 int recordeAdd(char* usuario, char* jogo, char* plataforma, char* tempo);
-void usuarioEdit();
-void jogoEdit();
-void recordeEdit();
-void usuarioDelete();
-void jogoDelete();
-void recordeDelete();
+int usuarioEdit(char* identificacao, int campo, char* valor);
+int jogoEdit(char* identificacao, int campo, char* valor);
+int recordeEdit(char* identificacao, int campo, char* valor);
+int usuarioDelete(char* identificacao);
+int jogoDelete(char* identificacao);
+int recordeDelete(char* identificacao);
 void mostrarUsuarios();
 void mostrarJogos();
 struct Recordes consultaRecordes(char* nomeJogador, char* nomeJogo, char* identificacao_recorde);
