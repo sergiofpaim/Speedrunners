@@ -417,7 +417,7 @@ void interpretador(int prompt)
         consultar();
         break;
     case 999:
-        serializarAlteracoes();
+        serializar();
         printf("\nAdeus!\n");
         break;
     default:

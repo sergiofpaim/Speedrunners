@@ -11,7 +11,7 @@ int main()
     /* Inicializa o gerador com a hora atual */
     srand((unsigned int)time(NULL));
 
-    //desserializarAlteracoes();
+    desserializar();
 
     int prompt = 0;
 

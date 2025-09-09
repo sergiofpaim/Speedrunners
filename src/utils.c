@@ -10,22 +10,6 @@
    Sessão com utilidades para o resto do código principal
    ============================================================ */
 
-void serializarString(char *destino, char *origem)
-{
-    int i;
-    for (i = 0; origem[i] != '\0'; i++)
-        destino[i] = (origem[i] == ' ') ? '_' : origem[i];
-    destino[i] = '\0';
-}
-
-void deserializarString(char *destino, char *origem)
-{
-    int i;
-    for (i = 0; origem[i] != '\0'; i++)
-        destino[i] = (origem[i] == '_') ? ' ' : origem[i];
-    destino[i] = '\0';
-}
-
 int gerarId(int min, int max)
 {
     return min + rand() % (max - min + 1);

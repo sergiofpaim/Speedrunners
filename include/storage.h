@@ -3,8 +3,8 @@
 
 #include "data.h"
 
-void desserializarAlteracoes();
-void serializarAlteracoes();
+void desserializar();
+void serializar();
 void exportarResultado(struct Recordes *consulta);
 
 #endif
