@@ -6,18 +6,10 @@ O sistema permite adicionar, editar, remover e consultar dados, além de exporta
 
 Observação: Nosso programa tem as estruturas realocadas de acordo com a necessidade, não usamos espaços extras.
 
-#### Compilação (Windows com MinGW)
-Abra um terminal (cmd ou PowerShell) no diretório do projeto e execute:
-
+#### Compilação
 ```bash
-gcc src/*.c -o speedrunners.exe
-```
-
-ou, se preferir produzir sem extensão no Linux/MinGW:
-
-```bash
-```
 gcc src/*.c -o speedrunners
+```
 
 #### Execução
 No mesmo diretório que o executável:
@@ -49,8 +41,13 @@ O comando de exportação de consulta cria:
 
 #### Mapa rápido de comandos (menu)
 [0] = Ajuda
+
 [1] = Adicionar elementos
+
 [2] = Editar elementos
+
 [3] = Deletar elementos
+
 [4] = Consultar
+
 [999] = Finalizar Programa
