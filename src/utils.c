@@ -55,20 +55,6 @@ int validarData(char *str)
             return 0;
     }
 
-    int dia = atoi(str);
-    int mes = atoi(str + 3);
-    int ano = atoi(str + 6);
-
-    if (mes < 1 || mes > 12)
-        return 0;
-
-    int diasNoMes[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0))
-        diasNoMes[1] = 29;
-
-    if (dia < 1 || dia > diasNoMes[mes - 1])
-        return 0;
-
     return 1;
 }
 

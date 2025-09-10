@@ -20,6 +20,13 @@ Tempo: 00:47:35:987
 Data de Registro: 19/08/2025
 Identificador: 2410
 --------------------------
+Usuário: sergiopaim
+Jogo: Celeste
+Plataforma: Nintendo Switch
+Tempo: 00:58:22:034
+Data de Registro: 09/09/2025
+Identificador: 2190
+--------------------------
 Usuário: vitorcarvalho
 Jogo: Cuphead
 Plataforma: Xbox One
@@ -27,10 +34,38 @@ Tempo: 01:01:48:689
 Data de Registro: 19/08/2025
 Identificador: 6865
 --------------------------
+Usuário: fatimabello
+Jogo: Undertale
+Plataforma: PC
+Tempo: 01:15:10:050
+Data de Registro: 09/09/2025
+Identificador: 5254
+--------------------------
+Usuário: joaofernandes
+Jogo: Hollow Knight
+Plataforma: PC
+Tempo: 01:32:45:078
+Data de Registro: 09/09/2025
+Identificador: 4813
+--------------------------
 Usuário: joaofernandes
 Jogo: Metroid
 Plataforma: PS3
 Tempo: 01:32:51:523
 Data de Registro: 19/08/2025
 Identificador: 3586
+--------------------------
+Usuário: liwei
+Jogo: Dark Souls
+Plataforma: PS5
+Tempo: 02:12:33:089
+Data de Registro: 09/09/2025
+Identificador: 5617
+--------------------------
+Usuário: marianasilva
+Jogo: Stardew Valley
+Plataforma: PC
+Tempo: 12:45:00:000
+Data de Registro: 09/09/2025
+Identificador: 9553
 --------------------------
